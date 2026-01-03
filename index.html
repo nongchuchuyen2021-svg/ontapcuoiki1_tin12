@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ôn tập Tin học 12 - Cuối kỳ I</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      header {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 25px;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      .tabs {
+        display: flex;
+        background-color: #f1f1f1;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 15px 20px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        border-right: 1px solid #ddd;
+      }
+
+      .tab:last-child {
+        border-right: none;
+      }
+
+      .tab:hover {
+        background-color: #e9e9e9;
+      }
+
+      .tab.active {
+        background-color: white;
+        color: #2c3e50;
+        border-bottom: 3px solid #2c3e50;
+      }
+
+      .tab-content {
+        display: none;
+        padding: 30px;
+        max-height: 700px;
+        overflow-y: auto;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .section-title {
+        color: #2c3e50;
+        border-bottom: 2px solid #eaeaea;
+        padding-bottom: 10px;
+        margin-top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .score-display {
+        background-color: #eef5ff;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .questions-container {
+        margin-top: 25px;
+      }
+
+      .question {
+        background-color: #f9f9f9;
+        border-left: 4px solid #3498db;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .question-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .question-number {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .question-text {
+        margin-bottom: 15px;
+        font-weight: 500;
+      }
+
+      .options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .option {
+        padding: 10px 15px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 14px;
+      }
+
+      .option:hover {
+        background-color: #f0f5ff;
+        border-color: #3498db;
+      }
+
+      .option.selected {
+        background-color: #e3eeff;
+        border-color: #2c3e50;
+        font-weight: bold;
+      }
+
+      .true-false-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .true-false-option {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .true-false-buttons {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 5px;
+      }
+
+      .tf-btn {
+        flex: 1;
+        padding: 8px 5px;
+        text-align: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .tf-btn.selected-true {
+        background-color: #d4edda;
+        border-color: #28a745;
+        color: #155724;
+      }
+
+      .tf-btn.selected-false {
+        background-color: #f8d7da;
+        border-color: #dc3545;
+        color: #721c24;
+      }
+
+      .option-text {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .essay-answer {
+        width: 100%;
+        min-height: 80px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      .hint {
+        background-color: #fff9e6;
+        border-left: 4px solid #ffc107;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 0 5px 5px 0;
+        font-size: 13px;
+        display: none;
+      }
+
+      .hint-title {
+        font-weight: bold;
+        color: #856404;
+        margin-bottom: 5px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        position: sticky;
+        bottom: 0;
+        background-color: white;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+        font-size: 14px;
+      }
+
+      .btn-primary {
+        background-color: #2c3e50;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #1a252f;
+      }
+
+      .btn-secondary {
+        background-color: #f1f1f1;
+        color: #333;
+      }
+
+      .btn-secondary:hover {
+        background-color: #e0e0e0;
+      }
+
+      .result-panel {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .result-panel.show {
+        display: block;
+      }
+
+      .point-info {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .options {
+          grid-template-columns: 1fr;
+        }
+
+        .true-false-container {
+          grid-template-columns: 1fr;
+        }
+
+        .tab {
+          padding: 12px 10px;
+          font-size: 14px;
+        }
+
+        .tab-content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>ÔN TẬP TIN HỌC 12 - CUỐI KỲ I</h1>
+        <h2>THPT NA RÌ</h2>
+        <div class="subtitle">
+          Đề cương ôn tập với đầy đủ đáp án và tính năng chấm điểm
+        </div>
+      </header>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="tn">Trắc nghiệm khách quan</div>
+        <div class="tab" data-tab="ds">Trắc nghiệm đúng sai</div>
+        <div class="tab" data-tab="tl">Tự luận</div>
+      </div>
+
+      <!-- Tab Trắc nghiệm khách quan -->
+      <div id="tn" class="tab-content active">
+        <h2 class="section-title">
+          Trắc nghiệm khách quan
+          <span class="score-display"
+            >Điểm: <span id="tn-score">0</span>/82.5 (330 câu × 0.25 điểm)</span
+          >
+        </h2>
+        <div class="point-info">Mỗi câu đúng được 0.25 điểm</div>
+
+        <div class="questions-container" id="tn-questions">
+          <!-- Câu hỏi sẽ được thêm bằng JavaScript -->
+        </div>
+
+        <div class="button-container">
+          <button class="btn btn-secondary" onclick="clearTNAnswers()">
+            Xóa đáp án đã chọn
+          </button>
+          <button class="btn btn-primary" onclick="calculateTNScore()">
+            Chấm điểm phần này
+          </button>
+        </div>
+
+        <div id="tn-result" class="result-panel">
+          <!-- Kết quả sẽ hiển thị ở đây -->
+        </div>
+      </div>
+
+      <!-- Tab Trắc nghiệm đúng sai -->
+      <div id="ds" class="tab-content">
+        <h2 class="section-title">
+          Trắc nghiệm đúng sai
+          <span class="score-display"
+            >Điểm: <span id="ds-score">0</span>/10 (10 câu × 1 điểm)</span
+          >
+        </h2>
+        <div class="point-info">
+          Thang điểm: Đúng 1 ý = 0.1 điểm, 2 ý = 0.25 điểm, 3 ý = 0.5 điểm, 4 ý
+          = 1 điểm
+        </div>
+
+        <div class="questions-container" id="ds-questions">
+          <!-- Câu hỏi sẽ được thêm bằng JavaScript -->
+        </div>
+
+        <div class="button-container">
+          <button class="btn btn-secondary" onclick="clearDSAnswers()">
+            Xóa đáp án đã chọn
+          </button>
+          <button class="btn btn-primary" onclick="calculateDSScore()">
+            Chấm điểm phần này
+          </button>
+        </div>
+
+        <div id="ds-result" class="result-panel">
+          <!-- Kết quả sẽ hiển thị ở đây -->
+        </div>
+      </div>
+
+      <!-- Tab Tự luận -->
+      <div id="tl" class="tab-content">
+        <h2 class="section-title">
+          Tự luận
+          <span class="score-display"
+            >Điểm: <span id="tl-score">0</span>/6 (6 câu)</span
+          >
+        </h2>
+        <div class="point-info">
+          Phần tự luận không tính điểm tự động, chỉ có gợi ý đáp án
+        </div>
+
+        <div class="questions-container" id="tl-questions">
+          <!-- Câu hỏi sẽ được thêm bằng JavaScript -->
+        </div>
+
+        <div class="button-container">
+          <button class="btn btn-secondary" onclick="clearTLAnswers()">
+            Xóa câu trả lời
+          </button>
+          <button class="btn btn-primary" onclick="showAllHints()">
+            Xem tất cả gợi ý
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ĐÁP ÁN TRẮC NGHIỆM KHÁCH QUAN (đã có từ đề cương)
+      const tnAnswers = [
+        "D",
+        "C",
+        "C",
+        "B",
+        "D",
+        "B",
+        "B",
+        "C",
+        "C",
+        "B", // BÀI 1: Câu 1-10
+        "B",
+        "A",
+        "C",
+        "A",
+        "B",
+        "B", // BÀI 2: Câu 1-6
+        "C",
+        "B",
+        "B",
+        "B",
+        "D",
+        "A", // BÀI 3: Câu 1-6
+        "C",
+        "C",
+        "A",
+        "D",
+        "D",
+        "A", // BÀI 4: Câu 1-6
+        "C",
+        "B",
+        "B",
+        "D",
+        "D", // BÀI 5: Câu 1-5
+        "C",
+        "C",
+        "B",
+        "A",
+        "B", // BÀI 6: Câu 1-5
+        "B",
+        "D",
+        "B",
+        "A",
+        "B",
+        "D",
+        "C", // BÀI 7: Câu 1-7
+        "B",
+        "C",
+        "B",
+        "C",
+        "D",
+        "A",
+        "C",
+        "B",
+        "A",
+        "A", // BÀI 8: Câu 1-14
+        "A",
+        "B",
+        "C",
+        "B",
+        "C",
+        "B",
+        "C",
+        "A",
+        "A", // BÀI 9: Câu 1-9
+        "C",
+        "A",
+        "D",
+        "C",
+        "B",
+        "B",
+        "A",
+        "B",
+        "A",
+        "D", // BÀI 10: Câu 1-10
+        "A",
+        "B",
+        "C",
+        "B",
+        "A",
+        "C",
+        "B",
+        "B",
+        "C",
+        "C", // BÀI 11: Câu 1-10
+        "B",
+        "D",
+        "B",
+        "B",
+        "A",
+        "B",
+        "B",
+        "B",
+        "C",
+        "C", // BÀI 12: Câu 1-10
+        "C",
+        "B",
+        "C",
+        "A",
+        "A", // BÀI 13: Câu 1-5
+      ];
+
+      // Dữ liệu câu hỏi trắc nghiệm khách quan
+      const tnQuestions = [
+        // BÀI 1 – AI CƠ BẢN
+        {
+          number: 1,
+          text: "Robot hình người đầu tiên trên thế giới được tích hợp một loạt ứng dụng AI là",
+          options: ["Apollo", "Valkyrie", "Asimo", "Sophia"],
+        },
+        {
+          number: 2,
+          text: "Hệ thống nào dưới đây không được coi là hệ thống có ứng dụng AI?",
+          options: [
+            "Google Translate",
+            "ChatGPT",
+            "Dãy chuyển lắp ráp tự động",
+            "Dự báo thời tiết",
+          ],
+        },
+        {
+          number: 3,
+          text: "Khái niệm về trí tuệ nhân tạo có thể được hiểu là",
+          options: [
+            "khả năng ghi nhớ mọi sự việc không giới hạn trong thời gian ngắn",
+            "khả năng suy luận của máy tính dựa trên các luật suy diễn sẵn có",
+            "khả năng thực hiện công việc một cách thông minh như con người",
+            "khả năng kết nối giữa thiết bị điện tử và máy tính thông qua Internet",
+          ],
+        },
+        {
+          number: 4,
+          text: "Cụm từ nào sau đây phù hợp khi nói về khả năng của máy tính có thể làm những công việc mang tính trí tuệ con người?",
+          options: [
+            "Trí tuệ công nghệ",
+            "Trí tuệ nhân tạo",
+            "Trí tuệ máy móc",
+            "Trí tuệ máy tính",
+          ],
+        },
+        {
+          number: 5,
+          text: "Phát biểu nào sau đây là SAI khi nói về AI trong xã hội hiện nay?",
+          options: [
+            "Một hệ thống AI cần có các đặc trưng cơ bản",
+            "Nhiều thiết bị di động điện tử được tích hợp AI",
+            "Phát triển AI đem lại lợi ích trong các lĩnh vực",
+            "Mọi hệ thống hoạt động tự động đều coi là AI",
+          ],
+        },
+        {
+          number: 6,
+          text: "Phương án nào sau đây liệt kê hai phân loại chính của Trí tuệ nhân tạo (AI)?",
+          options: [
+            "AI hẹp (ANI) và AI siêu thông minh (ASI)",
+            "AI hẹp (ANI) và AI tổng quát (AGI)",
+            "AI tổng quát (AGI) và AI Tự học (ALI)",
+            "AI tổng quát (AGI) và AI siêu thông minh (ASI)",
+          ],
+        },
+        {
+          number: 7,
+          text: "Thuật ngữ 'AI' bắt đầu được sử dụng vào năm nào?",
+          options: ["1945", "1956", "1970", "1985"],
+        },
+        {
+          number: 8,
+          text: "Phần mềm nào dưới đây là trợ lí áo của công ty Samsung?",
+          options: ["Google Assistant", "Alexa", "Bixby", "Sirri"],
+        },
+        // BÀI 2 – ỨNG DỤNG AI
+        {
+          number: 9,
+          text: "IoT là gì?",
+          options: [
+            "Công nghệ thông tin",
+            "Học sâu",
+            "Internet van vật",
+            "Thị giác máy tính",
+          ],
+        },
+        {
+          number: 10,
+          text: "ChatGPT được phát triển bởi",
+          options: ["Apple", "OpenAI", "Microsoft", "Meta"],
+        },
+        {
+          number: 11,
+          text: "Trong công nghiệp, AI giúp tự động hóa nhiều quá trình, từ chế tạo, lắp ráp, kiểm tra chất lượng đến quản lí chuỗi cung ứng. Phát biểu trên thuộc lĩnh vực nào?",
+          options: [
+            "Sản xuất",
+            "Giáo dục",
+            "Giao thông vận tải",
+            "Tài chính, ngân hàng",
+          ],
+        },
+        {
+          number: 12,
+          text: "Tại sao trí tuệ nhân tạo lại cần thiết trong việc phát triển các ứng dụng di động?",
+          options: [
+            "Giúp tối ưu hóa trải nghiệm người dùng",
+            "Tăng dung lượng bộ nhớ",
+            "Giảm thời gian sạc pin",
+            "Tăng số lượng ứng dụng cài đặt",
+          ],
+        },
+        {
+          number: 13,
+          text: "Lợi ích của AI trong giáo dục và đào tạo là gì?",
+          options: [
+            "Tăng chi phí giáo dục",
+            "Cá nhân hoá học tập",
+            "Giảm chất lượng giảng dạy",
+            "Tăng áp lực cho học viên",
+          ],
+        },
+        // BÀI 3 – THIẾT BỊ MANG
+        {
+          number: 14,
+          text: "Router là gì?",
+          options: [
+            "Bộ chuyển mạch",
+            "Bộ thu phát không dây",
+            "Bộ định tuyến",
+            "Bộ chia tín hiệu",
+          ],
+        },
+        {
+          number: 15,
+          text: "Trên mỗi router, cổng để kết nối với các router khác gọi là gì?",
+          options: ["Cổng WAP", "Cổng WAN", "Cổng LAN", "Cổng AP"],
+        },
+        {
+          number: 16,
+          text: "Hiện tượng xung đột tín hiệu thường xảy ra trên thiết bị nào sau đây?",
+          options: ["Router", "Hub", "Access Point", "Switch"],
+        },
+        {
+          number: 17,
+          text: "Thiết bị modem được tích hợp vào thiết bị nào sau đây?",
+          options: ["Switch", "Access Point", "Hub", "Router"],
+        },
+        {
+          number: 18,
+          text: "Loại modem nào cho phép nối hai máy tính qua hệ thống chuyển mạch của mạng điện thoại công cộng?",
+          options: [
+            "Modem quay số",
+            "Modem GSM 3G, 4G, 5G,....",
+            "Modem ADSL",
+            "Modem quang",
+          ],
+        },
+        // BÀI 4 – GIAO THỨC MẠNG
+        {
+          number: 19,
+          text: "Các quy định liên quan đến gửi thư có tên là gì?",
+          options: [
+            "Giao thức IMAP",
+            "Giao thức MQTT",
+            "Giao thức SMTP",
+            "Giao thức POP3",
+          ],
+        },
+        {
+          number: 20,
+          text: "Địa chỉ máy chủ của Bộ Giáo dục và Đào tạo có thể thay thế bằng",
+          options: ["moet.edu.com", "edu.com.vn", "moet.edu.vn", "edu.moet.vn"],
+        },
+        {
+          number: 21,
+          text: "Địa chỉ IP 11001011 10100010 00101001 11111110 dưới dạng thập phân là",
+          options: [
+            "203.162.41.254",
+            "230.178.52.166",
+            "203.126.71.235",
+            "235.197.80.255",
+          ],
+        },
+        {
+          number: 22,
+          text: "Phương án nào sau đây chỉ ra loại giao thức đặc thù của Internet?",
+          options: ["IP/DNS", "IP/MAC", "TCP/DNS", "IP/TCP"],
+        },
+        {
+          number: 23,
+          text: "Giao thức nào sau đây được dùng để truyền tải siêu văn bản?",
+          options: [
+            "Giao thức UDP",
+            "Giao thức IP",
+            "Giao thức SMTP",
+            "Giao thức HTTP",
+          ],
+        },
+        {
+          number: 24,
+          text: "Hiện nay có những loại địa chỉ IP nào?",
+          options: [
+            "IPv4 và IPv6",
+            "IPv2 và IPv4",
+            "IPv4 và IPv5",
+            "IPv1 và IPv3",
+          ],
+        },
+        // BÀI 5 – CHIA SẼ TÀI NGUYÊN MẠNG
+        {
+          number: 25,
+          text: "Để thiết lập chế độ mạng riêng tư và cho phép chia sẻ tệp và máy in, bước đầu tiên cần làm là gì?",
+          options: [
+            "Tắt tạm thời tường lừa",
+            "Cho phép các máy khác nhìn thấy",
+            "Thiết lập chế độ mạng riêng",
+            "Mở chức năng thiết lập chia sẻ nâng cao",
+          ],
+        },
+        {
+          number: 26,
+          text: "Để tạm thời dừng tường lửa, bạn vào phần nào trong Windows Security?",
+          options: [
+            "Device Security",
+            "Firewall & Network Protection",
+            "App & Browser Control",
+            "Virus & Threat Protection",
+          ],
+        },
+        {
+          number: 27,
+          text: "Để thêm người dùng vào danh sách chia sẻ, bạn cần làm gì?",
+          options: [
+            "Chọn thư mục, sau đó chọn Add User",
+            "Trong thẻ Sharing, chọn Add sau khi chọn Everyone",
+            "Nhấp chuột phải lên thư mục, chọn Add to Share List",
+            "Mở thư mục, chọn Add User",
+          ],
+        },
+        {
+          number: 28,
+          text: "Để chia sẻ máy in trên mạng, bước đầu tiên là gì?",
+          options: [
+            "Mở phần mềm máy in",
+            "Tìm máy in trong Control Panel",
+            "Cài đặt lại máy in",
+            "Chọn Printer properties",
+          ],
+        },
+        {
+          number: 29,
+          text: "Để kết nối với máy in mạng từ máy tính khác, bạn cần làm gì?",
+          options: [
+            "Tìm máy in trong phần Devices",
+            "Vào phần Add device và tìm máy in",
+            "Nhấp chuột phải lên máy in, chọn Connect",
+            "Chọn máy in từ danh sách và nhấp chuột vào Add",
+          ],
+        },
+        // BÀI 6 – ỨNG XỬ TRONG KHÔNG GIAN MẠNG
+        {
+          number: 30,
+          text: "Phương án nào sau đây không là công cụ giao tiếp trong không gian mạng?",
+          options: [
+            "Mạng xã hội",
+            "Hội nghị truyền hình",
+            "Thư giấy",
+            "FaceTime",
+          ],
+        },
+        {
+          number: 31,
+          text: "Chia sẻ thông tin chính xác và đáng tin cậy, tránh lan truyền thông tin sai lệch hoặc tin đồn thể hiện khía cạnh nào trong việc ứng xử nhân văn trong không gian mạng?",
+          options: ["Lịch sự", "Thấu hiểu", "Tôn trọng", "Hỗ trợ"],
+        },
+        {
+          number: 32,
+          text: "Phương án nào sau đây không là tình huống sử dụng giao tiếp trong không gian mạng?",
+          options: [
+            "Tham gia một cuộc họp trực tuyến",
+            "Tới thăm nhà họ hàng",
+            "Nộp bài tập bằng thư điện tử",
+            "Trò chuyện nhóm trên Facebook",
+          ],
+        },
+        {
+          number: 33,
+          text: "Một phát biểu sai về đặc điểm của giao tiếp qua mạng là",
+          options: [
+            "hoạt động chứa tín hiệu cảm xúc",
+            "thuận lợi cho việc lưu trữ thông tin",
+            "mở rộng các mối quan hệ xã hội",
+            "giao tiếp diễn ra ở mọi hoàn cảnh",
+          ],
+        },
+        {
+          number: 34,
+          text: "Một thuật ngữ có thể thay thế cho cụm từ 'Không gian mạng' là",
+          options: [
+            "thế giới công nghệ",
+            "thế giới số",
+            "thế giới thực",
+            "thế giới áo",
+          ],
+        },
+        // BÀI 7 – HTML CƠ BẢN
+        {
+          number: 35,
+          text: "Phần tử HTML có ý nghĩa chú thích trong tệp HTML có dạng như thế nào?",
+          options: [
+            "!-- chú thích --!",
+            "<!-- chú thích -->",
+            "// chú thích",
+            "{…chú thích…}",
+          ],
+        },
+        {
+          number: 36,
+          text: "Phương án nào sau đây là tên của một phần mềm soạn thảo HTML?",
+          options: [
+            "Mozilla Firefox",
+            "w3schools.com",
+            "Spotify",
+            "Sublime Text",
+          ],
+        },
+        {
+          number: 37,
+          text: "Phiên bản hiện tại của HTML là",
+          options: ["HTML4", "HTML5", "HTML6", "HTML7"],
+        },
+        {
+          number: 38,
+          text: "Trên trang HTML, thẻ `<p>` có ý nghĩa gì?",
+          options: [
+            "Đoạn văn bản",
+            "Tiêu đề trang web",
+            "Tiêu đề văn bản",
+            "Một câu trích dẫn ngắn",
+          ],
+        },
+        {
+          number: 39,
+          text: "Phát biểu nào sau đây sai?",
+          options: [
+            "Một phần tử HTML được định nghĩa bởi thẻ bắt đầu, thẻ kết thúc và phần nội dung nằm giữa cặp thẻ này",
+            "Dòng đầu tiên của mỗi tệp HTML có dạng `<!DOCTYPE html>` có vai trò thông báo kiểu của tệp là html và được xem là phần tử HTML",
+            "`<br>` là thẻ đơn",
+            "HTML không nhận biết kí tự xuống dòng (nhấn phím Enter) để kết thúc đoạn văn bản như các phần mềm soạn thảo văn bản thông thường",
+          ],
+        },
+        {
+          number: 40,
+          text: "Phần mở rộng của tệp ngôn ngữ siêu văn bản là",
+          options: [".hxtt", ".hxml", ".htmn", ".html"],
+        },
+        {
+          number: 41,
+          text: "HTML là gì?",
+          options: [
+            "Ngôn ngữ lập trình siêu văn bản",
+            "Ngôn ngữ thiết kế siêu văn bản",
+            "Ngôn ngữ đánh dấu siêu văn bản",
+            "Ngôn ngữ trình bày siêu văn bản",
+          ],
+        },
+        // BÀI 8 – ĐỊNH DẠNG VĂN BẢN HTML
+        {
+          number: 42,
+          text: "Thuộc tính nào dùng để thiết lập định dạng văn bản như chọn màu sắc, phông chữ, cỡ chữ, kiểu chữ, căn lề, tạo khung,… cho một phần tử HTML?",
+          options: ["format", "style", "design", "set"],
+        },
+        {
+          number: 43,
+          text: "Trên trang HTML, giá trị màu sắc được sử dụng theo giá trị trong hệ màu nào?",
+          options: ["RBG", "CMYK", "RGB", "RYB"],
+        },
+        {
+          number: 44,
+          text: "Khi muốn thực hiện nhiều định dạng phông đồng thời, em ngăn cách các cặp tên:giá trị trong phần giá trị của thuộc tính bằng dấu gì?",
+          options: ["Dấu ','", "Dấu ';'", "Dấu ':'", "Dấu cách"],
+        },
+        {
+          number: 45,
+          text: "Đoạn mã HTML để hiển thị công thức (H₂SO₄) là gì?",
+          options: [
+            "`<p>H<sup>2</sup>SO<sup></sup></p>`",
+            "`<p>H<small>2</small>SO<small></small></p>`",
+            "`<p>H<sub>2</sub>SO<sub>4</sub></p>`",
+            "`<p>H<down>2</down>SO<down>4</down></p>`",
+          ],
+        },
+        {
+          number: 46,
+          text: "Để định dạng kiểu chữ đậm và chữ màu đỏ cho tiêu đề 'Lịch sử phát triển HTML', em cần viết mã HTML như thế nào?",
+          options: [
+            '`<h1 style="color:red"><em>Lịch sử phát triển của HTML</em></h1>`',
+            '`<h1 style="color:rgb(205, 0, 0)"><b>Lịch sử phát triển của HTML</b></h1>`',
+            '`<p style="color:red"><strong>Lịch sử phát triển của HTML</strong></p>`',
+            '`<h1 style="color:red"><strong>Lịch sử phát triển của HTML</strong></h1>`',
+          ],
+        },
+        {
+          number: 47,
+          text: "Thẻ HTML nào được sử dụng để định dạng tiêu đề chính của một văn bản?",
+          options: ["`<h1>`", "`<h2>`", "`<h3>`", "`<title>`"],
+        },
+        {
+          number: 48,
+          text: "Thẻ HTML nào thường được sử dụng để tạo đoạn văn bản?",
+          options: ["`<div>`", "`<span>`", "`<p>`", "`<section>`"],
+        },
+        {
+          number: 49,
+          text: "Thẻ nào trong HTML được sử dụng để tạo một khối nội dung và bắt đầu trên dòng mới?",
+          options: ["`<span>`", "`<div>`", "`<section>`", "`<p>`"],
+        },
+        {
+          number: 50,
+          text: "Thẻ nào trong HTML không được hỗ trợ để tạo kiểu chữ lớn hơn?",
+          options: ["`<big>`", "`<u>`", "`<strong>`", "`<em>`"],
+        },
+        {
+          number: 51,
+          text: "Thuộc tính nào được sử dụng để thay đổi màu sắc của phông chữ trong HTML?",
+          options: ["color", "font-family", "font-size", "style"],
+        },
+        {
+          number: 52,
+          text: "Thẻ nào được sử dụng để tạo dòng kẻ ngang trên trang web?",
+          options: ["`<br>`", "`<hr>`", "`<line>`", "`<span>`"],
+        },
+        {
+          number: 53,
+          text: "Để viết số mũ trong HTML, thẻ nào được sử dụng?",
+          options: ["`<sub>`", "`<sup>`", "`<s>`", "`<b>`"],
+        },
+        {
+          number: 54,
+          text: "Trong HTML, thẻ nào được sử dụng để in đậm văn bản?",
+          options: ["`<em>`", "`<i>`", "`<strong>`", "`<mark>`"],
+        },
+        {
+          number: 55,
+          text: "Để xuống dòng trong HTML mà không tạo đoạn mới, thẻ nào được sử dụng?",
+          options: ["`<div>`", "`<p>`", "`<br>`", "`<hr>`"],
+        },
+        // BÀI 9 – BẢNG VÀ DANH SÁCH TRONG HTML
+        {
+          number: 56,
+          text: "Thẻ HTML dùng để tạo các ô dữ liệu trong bảng là",
+          options: ["`<td>`", "`<th>`", "`<table>`", "`<tr>`"],
+        },
+        {
+          number: 57,
+          text: "Khi định dạng tạo khung bằng, thuộc tính nhỏ độ_dày của thuộc tính con border trong thuộc tính style được đặt theo",
+          options: ["%", "px", "mm", "pt"],
+        },
+        {
+          number: 58,
+          text: "Khi định dạng tạo khung bằng, thuộc tính nhỏ kiểu_viền của thuộc tính con border trong thuộc tính style không nhận giá trị nào sau đây?",
+          options: ["None", "Dotted", "Shadow", "Solid"],
+        },
+        {
+          number: 59,
+          text: "Phát biểu nào sau đây đúng?",
+          options: [
+            "Để thêm tiêu đề cho bảng, ta sử dụng thẻ '<caption>', ngay trước thẻ '<table>'",
+            "Các dạng danh sách trong HTML cơ bản gồm danh sách có thứ tự và danh sách không có thứ tự",
+            "Để chọn kí tự đầu dòng, ta thiết lập giá trị của đặc tính list-style-type trong thuộc tính style bằng một trong 4 giá trị disc, circle, square và none",
+            "Sử dụng thuộc tính con length và height của thuộc tính style để điều chỉnh kích thước của bảng",
+          ],
+        },
+        {
+          number: 60,
+          text: "Cặp thẻ nào trong HTML dùng để tạo danh sách có thứ tự?",
+          options: ["`<ul></ul>`", "`<li></li>`", "`<ol></ol>`", "`<al></al>`"],
+        },
+        {
+          number: 61,
+          text: "Để gộp ô theo chiều ngang, em sử dụng thuộc tính nào?",
+          options: ["rowspan", "colspan", "colframe", "rowsize"],
+        },
+        {
+          number: 62,
+          text: "Để định dạng màu nền cho bảng, em sử dụng thuộc tính nào?",
+          options: ["background", "color", "bgcolor", "tablecolor"],
+        },
+        {
+          number: 63,
+          text: "Cặp thẻ nào trong HTML dùng để tạo danh sách không có thứ tự?",
+          options: ["`<ul></ul>`", "`<ol></ol>`", "`<li></li>`", "`<al></al>`"],
+        },
+        {
+          number: 64,
+          text: "Để gộp ô theo chiều dọc, em sử dụng thuộc tính nào?",
+          options: ["rowspan", "colspan", "colframe", "rowsize"],
+        },
+        // BÀI 10 – LIÊN KẾT TRONG HTML
+        {
+          number: 65,
+          text: "Thẻ nào trong HTML được dùng để tạo liên kết?",
+          options: ["`<b>`", "`<i>`", "`<a>`", "`<l>`"],
+        },
+        {
+          number: 66,
+          text: "Trường hợp liên kết nào sau đây là liên kết ngoài?",
+          options: [
+            "Liên kết từ một trang web tới một trang web khác trên Internet",
+            "Liên kết tới trang web thuộc thư mục khác, dưới hai (hay nhiều) cấp",
+            "Liên kết tới vị trí khác trong cùng trang web",
+            "Liên kết tới trang web cùng thư mục",
+          ],
+        },
+        {
+          number: 67,
+          text: "Khi tạo liên kết tới một vị trí cụ thể trong cùng trang web, em cần tạo phần tử HTML có thuộc tính gì tại vị trí được liên kết đến?",
+          options: [
+            "Thuộc tính src",
+            "Thuộc tính target",
+            "Thuộc tính class",
+            "Thuộc tính id",
+          ],
+        },
+        {
+          number: 68,
+          text: "Phát biểu nào sau đây sai?",
+          options: [
+            "Có hai loại URL chính là đường dẫn tuyệt đối và đường dẫn tương đối",
+            "Đường dẫn tương đối không yêu cầu giao thức hay tên miền mà chỉ cần tên đường dẫn",
+            "Các tệp có phần mở rộng .txt là các siêu văn bản",
+            "Siêu văn bản là loại văn bản mà nội dung của nó không chỉ chứa văn bản mà còn có thể chứa nhiều dạng dữ liệu khác như âm thanh, hình ảnh,… và đặc biệt là chứa các siêu liên kết tới siêu văn bản khác",
+          ],
+        },
+        {
+          number: 69,
+          text: "Đoạn mã HTML dùng để tạo liên kết tới trang web https://www.google.com/ là",
+          options: [
+            '`<a url="https://www.google.com/">Google</a>`',
+            '`<a href="https://www.google.com/">Google</a>`',
+            '`<a link="https://www.google.com/">Google</a>`',
+            '`<a domain="https://www.google.com/">Google</a>`',
+          ],
+        },
+        {
+          number: 70,
+          text: "Đường dẫn tương đối là gì?",
+          options: [
+            "Đường dẫn chứa giao thức và tên miền đầy đủ",
+            "Đường dẫn chỉ cần cung cấp tên đường dẫn đến tài liệu trong cùng máy chủ",
+            "Đường dẫn chứa thông tin về địa chỉ IP của máy chủ",
+            "Đường dẫn chỉ cần chứa tên tệp tin",
+          ],
+        },
+        {
+          number: 71,
+          text: "Để tạo liên kết tới một trang web khác trên Internet, ta sử dụng loại đường dẫn nào?",
+          options: [
+            "Đường dẫn tuyệt đối",
+            "Đường dẫn tương đối",
+            "Đường dẫn áo",
+            "Đường dẫn tĩnh",
+          ],
+        },
+        {
+          number: 72,
+          text: "Thuộc tính nào của thẻ `<a>` dùng để xác định đường dẫn liên kết?",
+          options: ["src", "href", "link", "target"],
+        },
+        {
+          number: 73,
+          text: "Để mở liên kết trong một cửa sổ hoặc tab mới, ta sử dụng thuộc tính nào của thẻ `<a>`?",
+          options: [
+            'target="_blank"',
+            'href="_blank"',
+            'rel="_blank"',
+            'window="_blank"',
+          ],
+        },
+        {
+          number: 74,
+          text: "Đoạn mã HTML dùng để tạo liên kết từ trang homepage.html tới trang product.html trong thư mục project là",
+          options: [
+            '`<a href="project/homepage.html">Product List</a>`',
+            '`<a url="project/product">Product List</a>`',
+            '`<a link="project/product.html">Product List</a>`',
+            '`<a href="project/product.html">Product List</a>`',
+          ],
+        },
+        // BÀI 11 – ĐA PHƯƠNG TIỆN TRONG HTML
+        {
+          number: 75,
+          text: "Thẻ nào được sử dụng để chèn ảnh vào trang web?",
+          options: ["`<img>`", "`<picture>`", "`<photo>`", "`<image>`"],
+        },
+        {
+          number: 76,
+          text: "Thuộc tính nào của thẻ `<img>` là bắt buộc?",
+          options: ["alt", "src", "width", "height"],
+        },
+        {
+          number: 77,
+          text: "Thẻ nào được sử dụng để chèn video vào trang web?",
+          options: ["`<audio>`", "`<media>`", "`<video>`", "`<movie>`"],
+        },
+        {
+          number: 78,
+          text: "Thẻ nào được sử dụng để chèn âm thanh vào trang web?",
+          options: ["`<music>`", "`<audio>`", "`<sound>`", "`<track>`"],
+        },
+        {
+          number: 79,
+          text: "Khi chèn khung nội tuyến vào trang web, bạn nên sử dụng thẻ nào?",
+          options: ["`<iframe>`", "`<frame>`", "`<embed>`", "`<object>`"],
+        },
+        {
+          number: 80,
+          text: "Phương án nào sau đây là định dạng tệp ảnh đồ hoạ vector?",
+          options: ["TIFF", "GIF", "EPS", "JPEG"],
+        },
+        {
+          number: 81,
+          text: "Thẻ `<audio>` không có thuộc tính nào sau đây?",
+          options: ["preload", "width", "muted", "autoplay"],
+        },
+        {
+          number: 82,
+          text: "Thuộc tính alt của thẻ `<img>` được dùng để làm gì?",
+          options: [
+            "Chèn nội dung lên hình ảnh",
+            "Cung cấp văn bản thay thế khi việc hiển thị ảnh bị lỗi",
+            "Chỉ đường dẫn tới tệp ảnh",
+            "Thiết lập kích thước cho ảnh",
+          ],
+        },
+        {
+          number: 83,
+          text: "Để video tự động phát khi trang web được mở, bạn cần sử dụng thuộc tính nào trong thẻ `<video>`?",
+          options: ["controls", "poster", "autoplay", "loop"],
+        },
+        // BÀI 12 – BIỂU MẪU WEB
+        {
+          number: 84,
+          text: "Biểu mẫu web đầy đủ gồm mấy thành phần?",
+          options: ["2", "3", "4", "5"],
+        },
+        {
+          number: 85,
+          text: "Phần tử nào của biểu mẫu xác định vùng nhập dữ liệu?",
+          options: ["name", "label", "textarea", "input"],
+        },
+        {
+          number: 86,
+          text: "Kiểu dữ liệu input của _____ là",
+          options: ["radio", "password", "text", "file"],
+        },
+        {
+          number: 87,
+          text: "Em sử dụng cặp thẻ HTML nào để tạo biểu mẫu?",
+          options: [
+            "`<table></table>`",
+            "`<form></form>`",
+            "`<iframe></iframe>`",
+            "`<model></model>`",
+          ],
+        },
+        {
+          number: 88,
+          text: "Thẻ nào được sử dụng để nhóm các phần tử có liên quan trong biểu mẫu?",
+          options: ["`<fieldset>`", "`<legend>`", "`<label>`", "`<select>`"],
+        },
+        {
+          number: 89,
+          text: "Để tạo các lựa chọn trong danh sách thả xuống, em sử dụng thẻ HTML nào trong phần tử `<select>`?",
+          options: ["choice", "option", "div", "datalist"],
+        },
+        {
+          number: 90,
+          text: "Khi sử dụng thẻ `<input>` với type='radio', mục đích của nó là để:",
+          options: [
+            "Cho phép chọn nhiều tùy chọn",
+            "Cho phép chọn một tùy chọn duy nhất trong một nhóm",
+            "Nhập dữ liệu dạng chữ",
+            "Nhập dữ liệu dạng số",
+          ],
+        },
+        {
+          number: 91,
+          text: "Để tạo một nút gửi thông tin trong biểu mẫu, thẻ `<input>` nên sử dụng thuộc tính nào?",
+          options: [
+            "type='text'",
+            "type='submit'",
+            "type='button'",
+            "type='reset'",
+          ],
+        },
+        {
+          number: 92,
+          text: "Để tham chiếu tới dữ liệu đã nhập khi thực hiện tính toán hay gửi tới máy chủ, em cần sử dụng thuộc tính nào của phần tử input?",
+          options: ["id", "value", "name", "type"],
+        },
+        {
+          number: 93,
+          text: "Thẻ `<label>` thường được sử dụng để:",
+          options: [
+            "Nhập dữ liệu",
+            "Nhóm phần tử",
+            "Định nghĩa nhãn cho phần tử input",
+            "Hiển thị các lựa chọn",
+          ],
+        },
+        // BÀI 13 – KHÁI NIỆM, VAI TRÒ CỦA CSS
+        {
+          number: 94,
+          text: "CSS là viết tắt của cụm từ nào sau đây?",
+          options: [
+            "Computer Style Sheets",
+            "Creative Style System",
+            "Cascading Style Sheets",
+            "Content Styling Syntax",
+          ],
+        },
+        {
+          number: 95,
+          text: "Trong cấu trúc CSS, phần nào quy định các phần tử HTML nào sẽ được áp dụng định dạng?",
+          options: [
+            "Vùng mô tả (declaration block)",
+            "Bộ chọn (selector)",
+            "Thuộc tính (property)",
+            "Giá trị (value)",
+          ],
+        },
+        {
+          number: 96,
+          text: "Cách thiết lập CSS nào sau đây cho phép áp dụng cùng một định dạng cho nhiều trang web?",
+          options: [
+            "CSS nội tuyến (inline CSS)",
+            "CSS trong (internal CSS)",
+            "CSS ngoài (external CSS)",
+            "Cả ba cách trên",
+          ],
+        },
+        {
+          number: 97,
+          text: "Đoạn mã CSS nào sau đây định dạng màu chữ đỏ và thụt lề 15px cho tất cả các thẻ <p>?",
+          options: [
+            "p {color: red; text-indent: 15px;}",
+            "p {red; 15px;}",
+            "p {color=red; indent=15px;}",
+            "p {font-color: red; margin: 15px;}",
+          ],
+        },
+        {
+          number: 98,
+          text: "Để liên kết một tệp CSS ngoài có tên 'styles.css' vào trang HTML, ta sử dụng cú pháp nào trong phần <head>?",
+          options: [
+            '<link href="styles.css" rel="stylesheet" type="text/css">',
+            '<style src="styles.css"></style>',
+            '<css href="styles.css">',
+            '<import file="styles.css">',
+          ],
+        },
+      ];
+
+      // Dữ liệu câu hỏi trắc nghiệm đúng sai (10 câu)
+      const dsQuestions = [
+        {
+          number: 1,
+          text: "Phần tử HTML (element HTML) là khái niệm cơ bản của trang HTML, dùng để xác định đối tượng sẽ được hiển thị trên trang web.",
+          options: [
+            "a) Phạm vi định nghĩa bắt đầu từ thẻ mở và kết thúc ở thẻ đóng.",
+            "b) Phần tử không được chứa phần tử khác.",
+            "c) Thẻ đơn không được tính là một phần tử HTML.",
+            "d) Tệp siêu văn bản gồm tập hợp các phần tử HTML.",
+          ],
+          correct: [true, false, false, true],
+        },
+        {
+          number: 2,
+          text: "Sử dụng danh sách và bảng sẽ giúp văn bản được trình bày khoa học hơn.",
+          options: [
+            "a) Có hai dạng danh sách trong HTML là danh sách có thứ tự và danh sách không có thứ tự.",
+            "b) Để chọn kí tự đầu dòng, ta thiết lập giá trị của đặc tính list-style-type trong thuộc tính style bằng một trong 4 giá trị disc, circle, square và none.",
+            "c) Để thêm tiêu đề cho bảng, ta sử dụng thẻ, ngay trước thẻ",
+            "d) Sử dụng thuộc tính con width và height của thuộc tính style để điều chỉnh kích thước của bảng.",
+          ],
+          correct: [true, true, false, true],
+        },
+        {
+          number: 3,
+          text: "Siêu văn bản là loại văn bản mà nội dung của nó không chỉ chứa văn bản mà còn có thể chứa nhiều dạng dữ liệu khác như âm thanh, hình ảnh,… và đặc biệt là chứa các siêu liên kết tới siêu văn bản khác.",
+          options: [
+            "a) Các tệp có phần mở rộng .txt đều là các siêu văn bản.",
+            "b) Trong HTML, người ta sử dụng thẻ để tạo siêu liên kết.",
+            "c) Có hai loại đường dẫn chính là đường dẫn tuyệt đối và đường dẫn tương đối.",
+            "d) Đường dẫn tương đối không yêu cầu giao thức hay tên miền mà chỉ cần tên đường dẫn.",
+          ],
+          correct: [false, true, true, true],
+        },
+        {
+          number: 4,
+          text: "Việc chèn ảnh vào trang web là một kỹ năng cơ bản nhưng không kém phần quan trọng trong thiết kế web.",
+          options: [
+            "a) Để chèn ảnh vào trang web, ta chỉ có thể sử dụng định dạng ảnh PNG và JPEG.",
+            "b) Thuộc tính src trong thẻ dùng để chỉ đường dẫn đến tệp ảnh.",
+            "c) Thuộc tính alt trong thẻ chỉ dùng để hiển thị văn bản thay thế khi hình ảnh không tải được.",
+            "d) Thuộc tính class dùng để gán một hoặc nhiều class cho một phần tử HTML, giúp chúng ta áp dụng các kiểu CSS cho phần tử đó.",
+          ],
+          correct: [false, true, false, true],
+        },
+        {
+          number: 5,
+          text: "Chèn hình ảnh và video không chỉ giúp trang web của bạn đẹp mắt hơn mà còn giúp người dùng dễ dàng hiểu nội dung hơn.",
+          options: [
+            "a) Để chèn âm thanh và video vào trang web, ta chỉ sử dụng thẻ <video> và <audio>",
+            "b) Định dạng tệp video phổ biến nhất là mp4 và webm, trong đó mp4 được hỗ trợ bởi hầu hết các trình duyệt.",
+            "c) Các thuộc tính width và height chỉ áp dụng cho thẻ <video>.",
+            "d) Thuộc tính poster sử dụng được cho thẻ <video> và <audio>",
+          ],
+          correct: [false, true, false, false],
+        },
+        {
+          number: 6,
+          text: "Đánh dấu đúng hay sai các ý sau đây về khung nội tuyến:",
+          options: [
+            "a) Khung nội tuyến là một khung hình chứa tài nguyên web khác trong trang web hiện tại.",
+            "b) Khung nội tuyến chỉ có thể chứa nội dung từ các trang web khác, không thể chứa nội dung HTML thuần túy.",
+            "c) Để tạo khung nội tuyến, ta sử dụng thẻ <iframe>.",
+            "d) Sử dụng khung nội tuyến không ảnh hưởng đến tốc độ tải trang.",
+          ],
+          correct: [true, false, true, false],
+        },
+        {
+          number: 7,
+          text: "Các phát biểu về biểu mẫu web sau đây đúng hay sai:",
+          options: [
+            "a) Biểu mẫu web chỉ dùng để thu thập thông tin cá nhân của người dùng.",
+            "b) Thẻ <form> là thẻ bắt buộc để tạo một biểu mẫu web.",
+            "c) Phần tử <label> dùng để đặt nhãn cho các phần tử nhập liệu trong biểu mẫu.",
+            "d) Phần tử <input> chỉ có thể dùng để nhập văn bản.",
+          ],
+          correct: [false, true, true, false],
+        },
+        {
+          number: 8,
+          text: "Phát biểu về thẻ và các thuộc tính của nó đúng hay sai:",
+          options: [
+            "a) Thuộc tính type='submit' của thẻ tạo một nút gửi thông tin của biểu mẫu.",
+            "b) Thẻ <input> với type='radio' cho phép chọn nhiều tùy chọn cùng một lúc.",
+            "c) Thuộc tính name của thẻ <input> xác định tên của phần tử input để gửi dữ liệu đến máy chủ.",
+            "d) Thẻ <input> với type='date' cho phép người dùng nhập dữ liệu dạng văn bản.",
+          ],
+          correct: [true, false, true, false],
+        },
+        {
+          number: 9,
+          text: "CSS là ngôn ngữ định dạng độc lập với HTML, được dùng để thiết lập các mẫu định dạng cho trang web.",
+          options: [
+            "a) CSS có thể viết trực tiếp trong thẻ <style> đặt trong phần <head> của trang HTML.",
+            "b) CSS chỉ có thể viết trong một tệp riêng có đuôi .css, không được viết trực tiếp trong tệp HTML.",
+            "c) CSS giúp định dạng một lần và áp dụng cho nhiều phần tử HTML cùng lúc thông qua bộ chọn (selector).",
+            "d) CSS là một phần mở rộng của HTML, không có cú pháp riêng biệt.",
+          ],
+          correct: [true, false, true, false],
+        },
+        {
+          number: 10,
+          text: "Có ba cách thiết lập CSS: CSS trong (internal), CSS ngoài (external) và CSS nội tuyến (inline).",
+          options: [
+            "a) CSS ngoài (external) cho phép áp dụng cùng một định dạng cho nhiều trang web khác nhau.",
+            "b) CSS nội tuyến (inline) được viết trong phần <head> và chỉ áp dụng cho toàn bộ trang.",
+            "c) CSS trong (internal) được đặt trong thẻ <style> trong phần <head> và chỉ có tác dụng trong trang HTML đó.",
+            "d) CSS ngoài (external) không thể kết nối với trang HTML thông qua thẻ <link>.",
+          ],
+          correct: [true, false, true, false],
+        },
+      ];
+
+      // Dữ liệu câu hỏi tự luận (6 câu)
+      const tlQuestions = [
+        {
+          number: 1,
+          text: "Siêu văn bản là gì?",
+          hint: "Siêu văn bản là loại văn bản mà nội dung của nó không chỉ chứa văn bản mà còn có thể chứa nhiều dạng dữ liệu khác như âm thanh, hình ảnh, video,... và đặc biệt là chứa các siêu liên kết (hyperlink) tới siêu văn bản khác.",
+        },
+        {
+          number: 2,
+          text: "Em hãy nêu những điểm khác biệt khi em đọc thông tin trên các trang web với việc em đọc sách, báo giấy. Theo em, điểm khác biệt nào là quan trọng nhất?",
+          hint: "Điểm khác biệt: 1) Tương tác: Trang web có siêu liên kết, video, âm thanh; sách/báo giấy chỉ có văn bản và hình ảnh tĩnh. 2) Cập nhật: Trang web có thể cập nhật nhanh, sách/báo in xong là cố định. 3) Tính đa phương tiện: Trang web có đa dạng định dạng. 4) Khả năng tìm kiếm: Trang web dễ tìm kiếm thông tin. Điểm quan trọng nhất là tính tương tác và khả năng chứa siêu liên kết.",
+        },
+        {
+          number: 3,
+          text: "Điểm khác biệt giữa radio, checkbox và select là gì?",
+          hint: "1) Radio: Chỉ cho phép chọn MỘT tùy chọn duy nhất trong nhóm. 2) Checkbox: Cho phép chọn NHIỀU tùy chọn cùng lúc. 3) Select (dropdown): Hiển thị danh sách tùy chọn trong menu thả xuống, thường cho phép chọn một hoặc nhiều tùy chọn tùy cấu hình.",
+        },
+        {
+          number: 4,
+          text: "Phần tử fieldset được dùng để làm gì?",
+          hint: "Thẻ <fieldset> được dùng để nhóm các phần tử có liên quan trong một biểu mẫu web. Nó tạo một khung bao quanh các phần tử được nhóm lại, giúp biểu mẫu có cấu trúc rõ ràng, dễ đọc và dễ sử dụng hơn. Thường được sử dụng kèm với thẻ <legend> để tạo tiêu đề cho nhóm.",
+        },
+        {
+          number: 5,
+          text: "Mẫu định dạng CSS là gì?",
+          hint: "Mẫu định dạng CSS (Cascading Style Sheets) là một ngôn ngữ được sử dụng để mô tả cách trình bày và định dạng của các phần tử HTML trên trang web. CSS cho phép kiểm soát màu sắc, phông chữ, bố cục, khoảng cách, kích thước và nhiều thuộc tính hiển thị khác, tách biệt nội dung (HTML) và định dạng (CSS).",
+        },
+        {
+          number: 6,
+          text: "Có mấy cách thiết lập CSS, kể tên các loại đó? Nếu muốn tất cả các đoạn văn bản của trang web có màu xanh (blue) thì cần thiết lập định dạng CSS như thế nào?",
+          hint: "Có 3 cách thiết lập CSS: 1) CSS nội tuyến (inline): Viết trực tiếp trong thuộc tính style của phần tử HTML. 2) CSS trong (internal): Viết trong thẻ <style> trong phần <head> của trang HTML. 3) CSS ngoài (external): Viết trong tệp .css riêng và liên kết với trang HTML qua thẻ <link>. Để tất cả đoạn văn bản có màu xanh: p { color: blue; }",
+        },
+      ];
+
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        initTabs();
+        renderTNQuestions();
+        renderDSQuestions();
+        renderTLQuestions();
+      });
+
+      // Xử lý tab
+      function initTabs() {
+        const tabs = document.querySelectorAll(".tab");
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            const tabId = this.getAttribute("data-tab");
+
+            // Ẩn tất cả tab content và xóa class active
+            document.querySelectorAll(".tab-content").forEach((content) => {
+              content.classList.remove("active");
+            });
+
+            document.querySelectorAll(".tab").forEach((tab) => {
+              tab.classList.remove("active");
+            });
+
+            // Hiển thị tab content được chọn
+            document.getElementById(tabId).classList.add("active");
+            this.classList.add("active");
+          });
+        });
+      }
+
+      // Hiển thị câu hỏi trắc nghiệm khách quan
+      function renderTNQuestions() {
+        const container = document.getElementById("tn-questions");
+
+        tnQuestions.forEach((q, index) => {
+          const questionElement = document.createElement("div");
+          questionElement.className = "question";
+          questionElement.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">Câu ${q.number}:</div>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options">
+                        ${q.options
+                          .map(
+                            (option, i) => `
+                            <div class="option" data-question="${index}" data-option="${i}">${String.fromCharCode(
+                              65 + i
+                            )}. ${option}</div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                `;
+          container.appendChild(questionElement);
+        });
+
+        // Thêm sự kiện click cho các lựa chọn
+        document.querySelectorAll("#tn-questions .option").forEach((option) => {
+          option.addEventListener("click", function () {
+            const questionIndex = parseInt(this.getAttribute("data-question"));
+
+            // Xóa lựa chọn trước đó trong cùng câu hỏi
+            document
+              .querySelectorAll(
+                `#tn-questions .option[data-question="${questionIndex}"]`
+              )
+              .forEach((opt) => {
+                opt.classList.remove("selected");
+              });
+
+            // Thêm lựa chọn mới
+            this.classList.add("selected");
+          });
+        });
+      }
+
+      // Hiển thị câu hỏi trắc nghiệm đúng sai
+      function renderDSQuestions() {
+        const container = document.getElementById("ds-questions");
+
+        dsQuestions.forEach((q, qIndex) => {
+          const questionElement = document.createElement("div");
+          questionElement.className = "question";
+
+          let optionsHTML = "";
+          q.options.forEach((option, oIndex) => {
+            optionsHTML += `
+                        <div class="true-false-option">
+                            <div class="option-text">${option}</div>
+                            <div class="true-false-buttons">
+                                <div class="tf-btn" data-question="${qIndex}" data-option="${oIndex}" data-value="true">Đúng</div>
+                                <div class="tf-btn" data-question="${qIndex}" data-option="${oIndex}" data-value="false">Sai</div>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          questionElement.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">Câu ${q.number}:</div>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="true-false-container">
+                        ${optionsHTML}
+                    </div>
+                `;
+          container.appendChild(questionElement);
+        });
+
+        // Thêm sự kiện click cho các nút đúng/sai
+        document.querySelectorAll("#ds-questions .tf-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const questionIndex = parseInt(this.getAttribute("data-question"));
+            const optionIndex = parseInt(this.getAttribute("data-option"));
+            const value = this.getAttribute("data-value");
+
+            // Xóa lựa chọn trước đó trong cùng ý
+            const buttons = document.querySelectorAll(
+              `#ds-questions .tf-btn[data-question="${questionIndex}"][data-option="${optionIndex}"]`
+            );
+            buttons.forEach((b) => {
+              b.classList.remove("selected-true", "selected-false");
+            });
+
+            // Thêm lựa chọn mới
+            if (value === "true") {
+              this.classList.add("selected-true");
+            } else {
+              this.classList.add("selected-false");
+            }
+          });
+        });
+      }
+
+      // Hiển thị câu hỏi tự luận
+      function renderTLQuestions() {
+        const container = document.getElementById("tl-questions");
+
+        tlQuestions.forEach((q) => {
+          const questionElement = document.createElement("div");
+          questionElement.className = "question";
+          questionElement.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">Câu ${q.number}:</div>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <textarea class="essay-answer" id="tl-answer-${q.number}" placeholder="Nhập câu trả lời của bạn..."></textarea>
+                    <div class="hint" id="hint-${q.number}" style="display: none;">
+                        <div class="hint-title">Gợi ý đáp án:</div>
+                        ${q.hint}
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 10px; font-size: 14px;" onclick="toggleHint(${q.number})">Xem gợi ý</button>
+                `;
+          container.appendChild(questionElement);
+        });
+      }
+
+      // Hiển thị/ẩn gợi ý cho câu tự luận
+      function toggleHint(questionNum) {
+        const hint = document.getElementById(`hint-${questionNum}`);
+        const currentDisplay = hint.style.display;
+        hint.style.display =
+          currentDisplay === "none" || currentDisplay === "" ? "block" : "none";
+
+        const button = hint.nextElementSibling;
+        button.textContent =
+          hint.style.display === "block" ? "Ẩn gợi ý" : "Xem gợi ý";
+      }
+
+      // Hiển thị tất cả gợi ý
+      function showAllHints() {
+        for (let i = 1; i <= tlQuestions.length; i++) {
+          const hint = document.getElementById(`hint-${i}`);
+          if (hint) {
+            hint.style.display = "block";
+            const button = hint.nextElementSibling;
+            if (button) button.textContent = "Ẩn gợi ý";
+          }
+        }
+      }
+
+      // Tính điểm trắc nghiệm khách quan
+      function calculateTNScore() {
+        let score = 0;
+        let correctCount = 0;
+        const totalQuestions = tnQuestions.length;
+
+        // Duyệt qua từng câu hỏi
+        for (let i = 0; i < totalQuestions; i++) {
+          const selectedOption = document.querySelector(
+            `#tn-questions .option[data-question="${i}"].selected`
+          );
+
+          if (selectedOption) {
+            const selectedIndex = parseInt(
+              selectedOption.getAttribute("data-option")
+            );
+            const correctAnswerIndex = getCorrectAnswerIndex(tnAnswers[i]);
+
+            if (selectedIndex === correctAnswerIndex) {
+              score += 0.25;
+              correctCount++;
+            }
+          }
+        }
+
+        // Hiển thị điểm
+        document.getElementById("tn-score").textContent = score.toFixed(2);
+
+        // Hiển thị kết quả chi tiết
+        const resultPanel = document.getElementById("tn-result");
+        resultPanel.innerHTML = `
+                <h3>Kết quả chấm điểm</h3>
+                <p>Bạn đã trả lời đúng <strong>${correctCount}/${totalQuestions}</strong> câu hỏi.</p>
+                <p>Tổng điểm: <strong>${score.toFixed(2)}</strong> / ${(
+          totalQuestions * 0.25
+        ).toFixed(2)} điểm</p>
+                <p>Tỷ lệ: <strong>${(
+                  (correctCount / totalQuestions) *
+                  100
+                ).toFixed(1)}%</strong></p>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-secondary" style="padding: 8px 15px; font-size: 13px;" onclick="showTNAnswers()">Xem đáp án đúng</button>
+                </div>
+                <div id="tn-answers-list" style="display: none; margin-top: 15px; padding: 15px; background-color: #e8f4f8; border-radius: 5px;"></div>
+            `;
+        resultPanel.classList.add("show");
+      }
+
+      // Tính điểm trắc nghiệm đúng sai
+      function calculateDSScore() {
+        let totalScore = 0;
+        let detailedResults = [];
+
+        dsQuestions.forEach((q, index) => {
+          let correctAnswers = 0;
+          let userAnswers = [];
+
+          // Thu thập đáp án người dùng chọn
+          for (
+            let optionIndex = 0;
+            optionIndex < q.options.length;
+            optionIndex++
+          ) {
+            const selectedOption = document.querySelector(
+              `#ds-questions .tf-btn[data-question="${index}"][data-option="${optionIndex}"].selected-true, #ds-questions .tf-btn[data-question="${index}"][data-option="${optionIndex}"].selected-false`
+            );
+
+            if (selectedOption) {
+              const userAnswer =
+                selectedOption.classList.contains("selected-true");
+              userAnswers.push(userAnswer);
+
+              // So sánh với đáp án đúng
+              if (userAnswer === q.correct[optionIndex]) {
+                correctAnswers++;
+              }
+            } else {
+              userAnswers.push(null);
+            }
+          }
+
+          // Tính điểm theo thang điểm
+          let questionScore = 0;
+          if (correctAnswers === 1) questionScore = 0.1;
+          else if (correctAnswers === 2) questionScore = 0.25;
+          else if (correctAnswers === 3) questionScore = 0.5;
+          else if (correctAnswers === 4) questionScore = 1.0;
+
+          totalScore += questionScore;
+
+          // Lưu kết quả chi tiết
+          detailedResults.push({
+            questionNum: q.number,
+            correctAnswers,
+            totalOptions: q.options.length,
+            score: questionScore,
+          });
+        });
+
+        // Hiển thị điểm
+        document.getElementById("ds-score").textContent = totalScore.toFixed(2);
+
+        // Hiển thị kết quả chi tiết
+        const resultPanel = document.getElementById("ds-result");
+        let resultHTML = `<h3>Kết quả chấm điểm</h3>`;
+        resultHTML += `<p>Tổng điểm: <strong>${totalScore.toFixed(
+          2
+        )}</strong> / 10 điểm</p>`;
+
+        detailedResults.forEach((result) => {
+          resultHTML += `
+                    <p>Câu ${result.questionNum}: Đúng ${
+            result.correctAnswers
+          }/${result.totalOptions} ý = ${result.score.toFixed(2)} điểm</p>
+                `;
+        });
+
+        resultHTML += `<div style="margin-top: 15px;">
+                <button class="btn btn-secondary" style="padding: 8px 15px; font-size: 13px;" onclick="showDSAnswers()">Xem đáp án đúng</button>
+            </div>
+            <div id="ds-answers-list" style="display: none; margin-top: 15px; padding: 15px; background-color: #e8f4f8; border-radius: 5px;"></div>`;
+
+        resultPanel.innerHTML = resultHTML;
+        resultPanel.classList.add("show");
+      }
+
+      // Xóa đáp án trắc nghiệm khách quan
+      function clearTNAnswers() {
+        document
+          .querySelectorAll("#tn-questions .option.selected")
+          .forEach((option) => {
+            option.classList.remove("selected");
+          });
+        document.getElementById("tn-result").classList.remove("show");
+        document.getElementById("tn-score").textContent = "0";
+      }
+
+      // Xóa đáp án trắc nghiệm đúng sai
+      function clearDSAnswers() {
+        document
+          .querySelectorAll(
+            "#ds-questions .tf-btn.selected-true, #ds-questions .tf-btn.selected-false"
+          )
+          .forEach((btn) => {
+            btn.classList.remove("selected-true", "selected-false");
+          });
+        document.getElementById("ds-result").classList.remove("show");
+        document.getElementById("ds-score").textContent = "0";
+      }
+
+      // Xóa câu trả lời tự luận
+      function clearTLAnswers() {
+        document.querySelectorAll(".essay-answer").forEach((textarea) => {
+          textarea.value = "";
+        });
+        document.querySelectorAll(".hint").forEach((hint) => {
+          hint.style.display = "none";
+          const button = hint.nextElementSibling;
+          if (button) button.textContent = "Xem gợi ý";
+        });
+      }
+
+      // Hàm hỗ trợ: chuyển đáp án từ ký tự sang chỉ số
+      function getCorrectAnswerIndex(answerChar) {
+        switch (answerChar.toUpperCase()) {
+          case "A":
+            return 0;
+          case "B":
+            return 1;
+          case "C":
+            return 2;
+          case "D":
+            return 3;
+          default:
+            return -1;
+        }
+      }
+
+      // Hiển thị đáp án đúng cho trắc nghiệm khách quan
+      function showTNAnswers() {
+        const answersList = document.getElementById("tn-answers-list");
+
+        if (
+          answersList.style.display === "none" ||
+          answersList.style.display === ""
+        ) {
+          let answersHTML = "<h4>Đáp án đúng:</h4>";
+
+          for (let i = 0; i < Math.min(20, tnQuestions.length); i++) {
+            const correctAnswerIndex = getCorrectAnswerIndex(tnAnswers[i]);
+            const correctAnswer = tnQuestions[i].options[correctAnswerIndex];
+            const answerLetter = String.fromCharCode(65 + correctAnswerIndex);
+
+            answersHTML += `<p><strong>Câu ${
+              i + 1
+            }:</strong> ${answerLetter}. ${correctAnswer}</p>`;
+          }
+
+          if (tnQuestions.length > 20) {
+            answersHTML += `<p>... và ${
+              tnQuestions.length - 20
+            } câu tiếp theo</p>`;
+          }
+
+          answersList.innerHTML = answersHTML;
+          answersList.style.display = "block";
+        } else {
+          answersList.style.display = "none";
+        }
+      }
+
+      // Hiển thị đáp án đúng cho trắc nghiệm đúng sai
+      function showDSAnswers() {
+        const answersList = document.getElementById("ds-answers-list");
+
+        if (
+          answersList.style.display === "none" ||
+          answersList.style.display === ""
+        ) {
+          let answersHTML = "<h4>Đáp án đúng:</h4>";
+
+          dsQuestions.forEach((q, index) => {
+            answersHTML += `<p><strong>Câu ${q.number}:</strong>`;
+            q.correct.forEach((isTrue, i) => {
+              answersHTML += ` ${String.fromCharCode(97 + i)}. ${
+                isTrue ? "Đúng" : "Sai"
+              };`;
+            });
+            answersHTML += "</p>";
+          });
+
+          answersList.innerHTML = answersHTML;
+          answersList.style.display = "block";
+        } else {
+          answersList.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>
